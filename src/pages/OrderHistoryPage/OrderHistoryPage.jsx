@@ -1,9 +1,27 @@
+import { getToken } from '../../utilities/users-service';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './OrderHistoryPage.css';
 import Logo from '../../components/Logo/Logo';
 import UserLogOut from '../../components/UserLogOut/UserLogOut';
+import OrderList from '../../components/OrderList/OrderList';
+import OrderDetail from '../../components/OrderDetail/OrderDetail';
+import * as ordersAPI from '../../utilities/orders-api';
+import { OrderListItem } from '../../components/OrderListItem/OrderListItem';
 
 export default function OrderHistoryPage({ user, setUser }) {
+  
+  const [orderHistory, setOrderHistory] = useState([]);
+
+  useEffect(function(){
+    async function getOrders(){
+      const Orders = await ordersAPI.getAll();
+      setOrderHistory(Orders)
+      
+    }
+    getOrders();
+  }, [])
+  console.log(orderHistory)
   return (
     <main className="OrderHistoryPage">
       <aside>
@@ -11,9 +29,9 @@ export default function OrderHistoryPage({ user, setUser }) {
         <Link to="/orders/new" className="button btn-sm">NEW ORDER</Link>
         <UserLogOut user={user} setUser={setUser} />
       </aside>
-      {/* Render an OrderList component (needs to be coded) */}
+      <OrderList orderHistory={orderHistory}/>
 
-      {/* Render the existing OrderDetail component */}
+      {/* <orderListItem={orderListItem}/> */}
 
     </main>
   );
