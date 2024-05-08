@@ -12,6 +12,7 @@ import { OrderListItem } from '../../components/OrderListItem/OrderListItem';
 export default function OrderHistoryPage({ user, setUser }) {
   
   const [orderHistory, setOrderHistory] = useState([]);
+  const [activeOrder, setActiveOrder] = useState('')
 
   useEffect(function(){
     async function getOrders(){
@@ -21,7 +22,12 @@ export default function OrderHistoryPage({ user, setUser }) {
     }
     getOrders();
   }, [])
-  console.log(orderHistory)
+
+  // console.log(orderHistory)
+
+  function handleOrderClick(order){
+    setActiveOrder(order)
+  }
   return (
     <main className="OrderHistoryPage">
       <aside>
@@ -29,9 +35,9 @@ export default function OrderHistoryPage({ user, setUser }) {
         <Link to="/orders/new" className="button btn-sm">NEW ORDER</Link>
         <UserLogOut user={user} setUser={setUser} />
       </aside>
-      <OrderList orderHistory={orderHistory}/>
+      <OrderList orderHistory={orderHistory} handleOrderClick={handleOrderClick}/>
 
-      {/* <orderListItem={orderListItem}/> */}
+      <OrderDetail order={activeOrder}/>
 
     </main>
   );
